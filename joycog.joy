@@ -1,0 +1,46 @@
+(* joycog.joy *)
+(* Given two lists of gear sprockets will calculate all ratios *)
+
+DEFINE
+
+	(* Constants. Ultimately these want to be arguments to the programme *)
+
+	littlegears == [12 13 15 17 19 21 23 26];
+	biggears == [30 50];
+
+	(* Calculate Ratios *)
+
+	biggear1 == biggears first 1.0 *;
+	biggear2 == biggears second 1.0 *;
+
+	ratios1 == [biggear1 swap /] map;
+	ratios2 == [biggear2 swap /] map;
+
+	ratios == littlegears dup ratios2 swap ratios1 concat;
+
+	(* Make up gear pairs *)
+
+	(* Since can't find a way to format integer as string, rather than list 
+	    results as [ [ 4.16667 "50/12" ] ... ], list as [ [ 4.16667 [ 50 12 ] ] ... ]
+	 *)
+
+	pairs1 == [ biggear1 unitlist cons] map;
+	pairs2 == [ biggear2 unitlist cons] map;
+
+	pairs == littlegears dup pairs2 swap pairs1 concat;
+
+	(* Zip together *)
+
+	ratiosandpairs == ratios pairs zip;
+
+	(* Sort *)
+
+	qsort1 == [ small ]
+			  [ ]
+			  [ uncons [[first] unary2 > ] split ]
+			  [ swap cons concat ]
+			  binrec;
+
+	sorted == ratiosandpairs sorted.
+
+	(* Almost working, but list is a bit flattened and includes empty lists *)
