@@ -3,33 +3,7 @@
 
 DEFINE
 
-	(* Constants. Ultimately these want to be arguments to the programme *)
-
-	littlegears == [12 13 15 17 19 21 23 26];
-	biggears == [34 50];
-
-	(* Build up list of ratios and gear pairs *)
-
-	biggear1 == biggears first
-	            1.0 *;
-	biggear2 == biggears second
-	            1.0 *;
-
-	ratios1 == littlegears dup
-	           [biggear1 swap /] map
-	           swap
-	           zip
-	           [biggear1 unitlist concat] map;
-
-	ratios2 == littlegears dup
-	           [biggear2 swap /] map
-	           swap
-	           zip
-	           [biggear2 unitlist concat] map;
-	
-	ratios == ratios1 ratios2 concat;
-
-	(* Sort *)
+	(* Sort Routine *)
 
 	qsort1 == [ small ]
 	          [ ]
@@ -37,4 +11,37 @@ DEFINE
 	          [ [swap] dip cons concat ]
 	          binrec;
 
-	sorted == ratios qsort1.
+	(* Constants *)
+
+	(* littlegears is now the argument to ratios *)
+	(* littlegears == [12 13 15 17 19 21 23 26]; *)
+
+	biggears == [34 50];
+
+	biggear1 == biggears first
+	            1.0 *;
+	biggear2 == biggears second
+	            1.0 *;
+
+	(* Ratios Routine *)
+
+	ratios ==
+	           dup
+(* Ratios1 *)
+	           dup
+	           [biggear1 swap /] map
+	           swap
+	           zip
+	           [biggear1 unitlist concat] map;
+
+	           swap
+(* Ratios2 *)
+	           dup
+	           [biggear2 swap /] map
+	           swap
+	           zip
+	           [biggear2 unitlist concat] map;
+(* Join *)
+	           concat
+(* sort *)
+	           qsort1.
