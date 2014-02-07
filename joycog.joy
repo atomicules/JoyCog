@@ -1,9 +1,37 @@
 (* joycog.joy *)
-(* Given two lists of gear sprockets will calculate all ratios *)
+(* ========== *)
+
+(* Given a list of two chainset gears (I.e. a compact double) and then a list of cassette
+   sprockets, will calculate all the ratios and sort them, reporting out the results as a
+   list of triples; the first of the triple being the ratio, the second being the cassette
+   sprocket and the third being the chainset gear.
+*)
+
+
+(* Key for the stack notation
+   ==========================
+
+   F = Float
+   I = Integer
+   [...] = List
+
+*)
 
 DEFINE
 
+	(* Constants  *)
+	(* =========  *)
+
+	(* For reference, supplied as arguments to main programme *)
+
+	(* littlegears == [12 13 15 17 19 21 23 26]; *)
+	(* biggears == [34 50]; *)
+
+
 	(* Sort Routine *)
+	(* ============ *)
+
+	(* From: https://pinboard.in/u:atomicules/b:f83913dc1fd8 *)
 
 	qsort1 == [ small ]
 	          [ ]
@@ -11,37 +39,47 @@ DEFINE
 	          [ [swap] dip cons concat ]
 	          binrec;
 
-	(* Constants *)
 
-	(* littlegears is now the argument to ratios *)
-	(* littlegears == [12 13 15 17 19 21 23 26]; *)
+	(* Ratios *)
+	(* ====== *)
 
-	biggears == [34 50];
+	(* Example:
+	   > 34 [12 13 15 17 19 21 23 26] ratios.
+	   > [[2 12 34] [2 13 34] [2 15 34] [2 17 34] [1 19 34] ... ]
+	*)
 
-	biggear1 == biggears first
-	            1.0 *;
-	biggear2 == biggears second
-	            1.0 *;
+	ratios ==                              (* Stack: F [I...] *)
+		dup                                (* Stack: F [I...] [I...] *)
+		rotate                             (* Stack: [I...] [I...] F *)
+		dup                                (* Stack: [I...] [I...] F F *)
+		unitlist [swap /] concat           (* Stack: [I...] [I...] F [F swap /] *)
+		rolldown swap                      (* Stack: [I...] F [I...] [F swap /] *)
+		map                                (* Stack: [I...] F [F...] *)
+		rolldown                           (* Stack: F [F...] [I...] *)
+		zip                                (* Stack: F [[F I]...] *)
+		swap                               (* Stack: [[F I]...] F *)
+		unitlist [unitlist concat] concat  (* Stack: [[F I]...] [F unitlist concat] *)
+		map;                               (* Stack: [[F I I]...] *)
 
-	(* Ratios Routine *)
 
-	ratios ==
-	           dup
-(* Ratios1 *)
-	           dup
-	           [biggear1 swap /] map
-	           swap
-	           zip
-	           [biggear1 unitlist concat] map;
+	(* Main *)
+	(* ==== *)
 
-	           swap
-(* Ratios2 *)
-	           dup
-	           [biggear2 swap /] map
-	           swap
-	           zip
-	           [biggear2 unitlist concat] map;
-(* Join *)
-	           concat
-(* sort *)
-	           qsort1.
+	(* Example:
+	   > [34 50] [12 13 15 17 19 21 23 26] joycog.
+	   > [[1.30769 26 34] [1.47826 23 34] [1.61905 21 34] [1.78947 19 34] ... ]
+	*)
+
+	joycog ==                              (* Stack: [I I] [I...] *)
+		dup                                (* Stack: [I I] [I...] [I...] *)
+		rolldown                           (* Stack: [I...] [I...] [I1 I2] *)
+		dup                                (* Stack: [I...] [I...] [I1 I2] [I1 I2] *)
+		first 1.0 *                        (* Stack: [I...] [I...] [I1 I2] I1 *)
+		rolldown                           (* Stack: [I...] [I1 I2] I1 [I...] *)	
+		ratios                             (* Stack: [I...] [I1 I2] [[F I I]...] *)
+		rollup                             (* Stack: [[F I I]...] [I...] [I1 I2] *)
+		second 1.0 *                       (* Stack: [[F I I]...] [I...] I2 *)
+		swap                               (* Stack: [[F I I]...] I2 [I...] *)
+		ratios                             (* Stack: [[F I I]...] [[F I I]...] *)
+		concat                             (* Stack: [[F I I]...] *)
+		qsort1.                            (* Stack: [[F I I]...] *)
