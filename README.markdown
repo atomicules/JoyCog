@@ -8,3 +8,13 @@ A little learning exercise in [Joy](http://www.kevinalbrecht.com/code/joy-mirror
 I decided to do this as I was intrigued about what the theoretical progression of gears should be on my bike (you could never shift like this in practice). There is more overlap than I thought.
 
 One possible extension I could do is to discount the ratios at the extremes of chain angle, e.g. biggest front geat and biggest rear sprocket. But wrapping my head around Joy has been hard, so I'll not do that too soon.
+
+##Installing / Using
+
+1. Get and compile Joy from [Kevin Albrecht's mirror](http://www.kevinalbrecht.com/code/joy-mirror/index.html) (I went with "current joy.tar.gz")
+2. Start and interactive Joy session, e.g: `/.joy`
+3. Import like so: `/path/to/joycog.joy include.`
+
+##Todo
+
+- See if I can figure out making it a command line programme.
