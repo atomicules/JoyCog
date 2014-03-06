@@ -12,7 +12,7 @@ One possible extension I could do is to discount the ratios at the extremes of c
 ##Installing / Using
 
 1. Get and compile Joy from [Kevin Albrecht's mirror](http://www.kevinalbrecht.com/code/joy-mirror/index.html) (I went with "current joy.tar.gz")
-2. Start and interactive Joy session, e.g: `/.joy`
+2. Start and interactive Joy session, e.g: `./joy`
 3. Import like so: `/path/to/joycog.joy include.`
 
 ##Todo
