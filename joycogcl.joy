@@ -36,7 +36,7 @@ dup
 
 (* Working on the copy, assume next two arguments are for the front chainring *)
 
-dup 2 take 
+2 take 
 
 (* Swap the stack to work on rest of args again *)
 
