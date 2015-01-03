@@ -12,9 +12,15 @@ One possible extension I could do is to discount the ratios at the extremes of c
 ##Installing / Using
 
 1. Get and compile Joy from [Kevin Albrecht's mirror](http://www.kevinalbrecht.com/code/joy-mirror/index.html) (I went with "current joy.tar.gz")
-2. Start and interactive Joy session, e.g: `./joy`
-3. Import like so: `/path/to/joycog.joy include.`
 
-##Todo
+###Interactively
 
-- See if I can figure out making it a command line programme.
+2. Start an interactive Joy session from within the directory where joy was compiled so that usrlib, inilib and agglib are loaded automatically, e.g: `./joy`
+3. Import joycog like so: `/path/to/joycog.joy include.`
+4. Run as `[34 50] [12 13 15 17 19 21 23 26] joycog.`
+
+###From the Command Line
+
+5. Edit the relative path in the joycogcl.joy file
+6. cd to the joy executable directory (so usrlib, inilib and agglib are loaded automatically)
+7. Call as `./joy /path/to/joycogcl.joy 34 50 12 13 15 17 19 21 23 26`. I.e the first two arguments are the front chainring the rest are the cassette

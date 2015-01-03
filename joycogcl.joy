@@ -1,0 +1,73 @@
+(* joycogcl.joy *)
+(* ============ *)
+
+(* A command line wrapper for joycog.joy
+   
+   - You may well need to tweak the path below to the joycog.joy file
+   - Execute from within the joy executable directory (so usrlib, inilib and agglib are loaded automatically)
+   - Call as `./joy /path/to/joycogcl.joy 34 50 12 13 15 17 19 21 23 26`
+     I.e the first two arguments are the front chainring the rest are the cassette
+
+*)
+
+(* Get HOME directory *)
+
+"HOME" getenv 
+
+(* Add trailing slash *)
+
+"/" concat
+
+(* Path relative to HOME to joycog file *)
+
+"Code/github/atomicules/joycog/joycog.joy" 
+
+(* Include that file so can execute joycog command *)
+
+concat include.
+
+(* The first argument is the name of the file being executed so drop that using `rest` *)
+
+argv rest 
+
+(* Make a copy of it *)
+
+dup
+
+(* Working on the copy, assume next two arguments are for the front chainring *)
+
+dup 2 take 
+
+(* Swap the stack to work on rest of args again *)
+
+swap
+
+(* The rest are for the cassette *)
+
+2 drop
+
+(* But everything will be strings so need to convert to integers *)
+
+[0 strtol] map
+
+(* Swap stack again to convert other aggregate to integers *)
+
+swap 
+
+[0 strtol] map
+
+(* Swap stack back the required way *)
+
+swap
+
+(* Call the actual routine *)
+
+joycog
+
+(* And print the results out *)
+
+put.
+
+(* Print a blank line *)
+
+"\n" putchars.
